@@ -1,0 +1,21 @@
+{
+  "name": "Praça Viva",
+  "short_name": "Praça Viva",
+  "description": "Catálogo de Plantas e Quiz da Praça Inteligente Santa Marta",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#E6F4EA",
+  "theme_color": "#2E7D32",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1892/1892751.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1892/1892751.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
