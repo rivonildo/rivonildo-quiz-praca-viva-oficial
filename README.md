@@ -60,7 +60,7 @@ Por ser um projeto puramente estático (Vanilla HTML/CSS/JS), não é necessári
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git
+git clone https://github.com/rivonildo/rivonildo-quiz-praca-viva-oficial.git
 ```
 2. Abra a pasta do projeto:
 ```bash
@@ -83,7 +83,8 @@ Este projeto foi refatorado para operar como um sistema distribuído (Microsserv
 ### 🚀 Stack Tecnológica Atualizada
 *   **Frontend (Vercel):** Hospedado em infraestrutura Edge (pracaviva.vml10.xyz), garantindo carregamento ultrarrápido (CDN) para acesso via QR Code.
 *   **Backend (HostGator):** API REST em PHP 8+ com PDO seguro, servindo como ponte centralizada para banco de dados relacional.
-*   **Database:** MySQL Server hospedando arquitetura de rastreamento com 3 tabelas (plantas_metricas, cessos_log, ate_limit_log).
+*   **Database:** MySQL Server hospedando arquitetura de rastreamento com 3 tabelas (plantas_metricas, cessos_log, 
+ate_limit_log).
 
 ### 🛡️ Segurança Aplicada (OWASP & LGPD)
 *   **WAF (Web Application Firewall):** Módulo PHP nativo bloqueando injeções (XSS, Code Injection) e ofuscadores (ase64).
