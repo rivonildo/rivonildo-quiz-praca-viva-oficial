@@ -1,0 +1,84 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif; 
+            background: #f0f7e6; 
+            color: #2d3e2c; 
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 700px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 30px; 
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #b5d3a4;
+        }
+        .cabecalho {
+            background: #2e7d32;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        .cabecalho h1 { font-size: 2.2rem; margin-bottom: 5px; }
+        .cabecalho p { font-size: 1rem; opacity: 0.9; }
+        .conteudo { padding: 25px; }
+        .info-bloco { 
+            background: #f9fff9; 
+            border-left: 5px solid #4caf50; 
+            padding: 18px; 
+            margin-bottom: 20px;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .info-bloco h2 { 
+            color: #1e5622; 
+            font-size: 1.5rem; 
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-bloco p { margin-bottom: 10px; }
+        .destaque {
+            background: #f1f8e9;
+            padding: 18px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 2px dashed #7cb342;
+        }
+        .mensagem {
+            background: #e8f0e0;
+            padding: 20px;
+            border-radius: 20px;
+            font-style: italic;
+            border: 2px solid #4caf50;
+        }
+        .rodape {
+            background: #f0f7e6;
+            padding: 18px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #2e7d32;
+            border-top: 2px solid #b5d3a4;
+        }
+        .qr-simulado {
+            background: #eee;
+            width: 120px;
+            height: 120px;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #2e7d32;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #555;
+        }
+        .qr-simulado i { font-size: 2.5rem; }
+        @media (max-width: 480px) {
+            .cabecalho h1 { font-size: 1.8rem; }
+            .conteudo { padding: 18px; }
+        }

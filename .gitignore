@@ -1,0 +1,15 @@
+# Environment variables & local configuration
+.env
+.env.*
+config.local.php
+
+# Archives and backups
+*.zip
+*.tar.gz
+*.bak
+*.old
+*.tmp
+
+# OS temporary files
+.DS_Store
+Thumbs.db
