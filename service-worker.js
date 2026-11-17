@@ -1,4 +1,4 @@
-const CACHE_NAME = 'praca-viva-v1';
+const CACHE_NAME = 'praca-viva-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -31,9 +31,10 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache aberto com sucesso');
+        console.log('[PWA] Cache v2 aberto com sucesso');
         return cache.addAll(ASSETS_TO_CACHE);
       })
+      .catch(err => console.warn('[PWA] Aviso no pre-cache:', err))
   );
   self.skipWaiting();
 });
@@ -45,7 +46,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('Apagando cache antigo:', cacheName);
+            console.log('[PWA] Apagando cache antigo:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -55,7 +56,7 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Interceptação de requisições (Modo Offline)
+// Interceptação de requisições (Modo Offline Resiliente)
 self.addEventListener('fetch', event => {
   // Ignora requisições POST (como a chamada da nossa API de métricas)
   if (event.request.method !== 'GET') return;
@@ -63,25 +64,31 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Retorna o arquivo em cache se existir (Modo Offline)
+        // Se já está no cache, retorna imediatamente
         if (response) {
-            return response;
+          return response;
         }
-        // Se não estiver no cache, tenta buscar na rede
-        return fetch(event.request).then(networkResponse => {
-            // Verifica se a resposta é válida
-            if(!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-              return networkResponse;
-            }
-            
-            // Faz um clone da resposta e salva no cache para a próxima vez
-            let responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
 
+        // Tenta buscar na rede
+        return fetch(event.request).then(networkResponse => {
+          if (!networkResponse || networkResponse.status !== 200) {
             return networkResponse;
+          }
+
+          // Se for requisição válida (mesmo domínio ou CORS seguro), salva clone no cache
+          if (event.request.url.startsWith(self.location.origin) || event.request.url.includes('cdnjs.cloudflare.com')) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+
+          return networkResponse;
+        }).catch(() => {
+          // Fallback offline se a rede falhar
+          if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
+            return caches.match('/index.html');
+          }
         });
       })
   );

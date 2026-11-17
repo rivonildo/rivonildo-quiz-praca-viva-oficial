@@ -1718,7 +1718,10 @@
                     <div style="background: var(--verde-suave); padding: 20px; border-radius: 20px; margin: 20px 0;">
                         <p>🌳 ${currentLang === 'pt' ? 'Você agora é oficialmente um Guardião da Praça! Compartilhe essa conquista.' : 'You are now officially a Square Guardian! Share this achievement.'}</p>
                     </div>
-                    <div style="display: flex; gap: 15px; justify-content: center;">
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <button class="control-btn" id="cert-btn" style="background: #2e7d32; color: #fff;">
+                            <i class="fas fa-award"></i> ${currentLang === 'pt' ? 'Gerar Certificado' : 'Get Certificate'}
+                        </button>
                         <button class="control-btn" id="restart-btn" style="background: var(--laranja);">
                             <i class="fas fa-redo"></i> ${currentLang === 'pt' ? 'Refazer' : 'Restart'}
                         </button>
@@ -1730,6 +1733,148 @@
             `;
             document.getElementById('restart-btn').addEventListener('click', () => location.reload());
             document.getElementById('share-result-btn').addEventListener('click', openShareModal);
+            document.getElementById('cert-btn').addEventListener('click', () => gerarCertificadoGuardiao(score, correctAnswers));
+        }
+
+        function gerarCertificadoGuardiao(score, correctCount) {
+            const nomeParticipante = prompt(currentLang === 'pt' ? "Digite seu nome completo para o Certificado:" : "Enter your full name for the Certificate:", "Guardião da Praça") || (currentLang === 'pt' ? "Guardião da Praça" : "Square Guardian");
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1200;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+
+            // Fundo e Bordas
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 1200, 800);
+
+            ctx.lineWidth = 16;
+            ctx.strokeStyle = '#2e7d32';
+            ctx.strokeRect(30, 30, 1140, 740);
+
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#f9a825';
+            ctx.strokeRect(50, 50, 1100, 700);
+
+            // Cabeçalho
+            ctx.fillStyle = '#2e7d32';
+            ctx.font = 'bold 42px "Poppins", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🌿 CERTIFICADO DE GUARDIÃO DA NATUREZA 🌿', 600, 140);
+
+            ctx.fillStyle = '#555555';
+            ctx.font = '22px "Poppins", sans-serif';
+            ctx.fillText('Praça Inteligente Santa Marta • Xique-Xique, Bahia', 600, 185);
+
+            // Corpo
+            ctx.fillStyle = '#333333';
+            ctx.font = '26px "Poppins", sans-serif';
+            ctx.fillText(currentLang === 'pt' ? 'Certificamos com louvor e honra que' : 'This is to proudly certify that', 600, 270);
+
+            ctx.fillStyle = '#1b5e20';
+            ctx.font = 'bold 50px "Poppins", sans-serif';
+            ctx.fillText(nomeParticipante, 600, 350);
+
+            ctx.fillStyle = '#444444';
+            ctx.font = '24px "Poppins", sans-serif';
+            const textoAproveitamento = currentLang === 'pt' 
+                ? `concluiu com êxito o Quiz Praça Viva, atingindo ${score}% de aproveitamento (${correctCount}/50 acertos),`
+                : `successfully completed the Praça Viva Quiz with ${score}% score (${correctCount}/50 correct),`;
+            ctx.fillText(textoAproveitamento, 600, 420);
+
+            const textoCompromisso = currentLang === 'pt'
+                ? 'tornando-se Guardião Oficial da biodiversidade, preservação e arborização urbana da comunidade.'
+                : 'becoming an Official Guardian of biodiversity and urban nature preservation in the community.';
+            ctx.fillText(textoCompromisso, 600, 465);
+
+            // Selo / Medalha
+            ctx.fillStyle = '#f9a825';
+            ctx.beginPath();
+            ctx.arc(600, 570, 55, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 28px sans-serif';
+            ctx.fillText('★ 100% ★', 600, 580);
+
+            // Rodapé
+            const dataHoje = new Date().toLocaleDateString(currentLang === 'pt' ? 'pt-BR' : 'en-US');
+            ctx.fillStyle = '#666666';
+            ctx.font = '18px "Poppins", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`📅 Data: ${dataHoje}`, 100, 700);
+
+            ctx.textAlign = 'right';
+            ctx.fillText('Engenharia de Software • Projeto de Extensão • Anhanguera', 1100, 700);
+
+            // Modal de exibição do Certificado
+            const modalCert = document.createElement('div');
+            modalCert.style.position = 'fixed';
+            modalCert.style.top = '0';
+            modalCert.style.left = '0';
+            modalCert.style.width = '100vw';
+            modalCert.style.height = '100vh';
+            modalCert.style.backgroundColor = 'rgba(0,0,0,0.85)';
+            modalCert.style.zIndex = '9999';
+            modalCert.style.display = 'flex';
+            modalCert.style.flexDirection = 'column';
+            modalCert.style.alignItems = 'center';
+            modalCert.style.justifyContent = 'center';
+            modalCert.style.padding = '20px';
+
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL('image/png');
+            img.style.maxWidth = '90%';
+            img.style.maxHeight = '70vh';
+            img.style.borderRadius = '12px';
+            img.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+
+            const botoesContainer = document.createElement('div');
+            botoesContainer.style.marginTop = '20px';
+            botoesContainer.style.display = 'flex';
+            botoesContainer.style.gap = '15px';
+            botoesContainer.style.flexWrap = 'wrap';
+
+            const btnDownload = document.createElement('a');
+            btnDownload.href = img.src;
+            btnDownload.download = `Certificado_Guardiao_${nomeParticipante.replace(/\s+/g, '_')}.png`;
+            btnDownload.innerHTML = '📥 Baixar Certificado';
+            btnDownload.className = 'control-btn';
+            btnDownload.style.backgroundColor = '#2e7d32';
+            btnDownload.style.color = '#fff';
+            btnDownload.style.textDecoration = 'none';
+            btnDownload.style.padding = '12px 20px';
+            btnDownload.style.borderRadius = '25px';
+
+            const btnZap = document.createElement('a');
+            const zapTexto = encodeURIComponent(`Olha só meu Certificado de Guardião da Praça Santa Marta em Xique-Xique! Acertei ${correctCount}/50 no Quiz Praça Viva (${score}%). Teste seus conhecimentos também: https://pracaviva.vml10.xyz`);
+            btnZap.href = `https://wa.me/?text=${zapTexto}`;
+            btnZap.target = '_blank';
+            btnZap.innerHTML = '📲 Compartilhar no WhatsApp';
+            btnZap.className = 'control-btn';
+            btnZap.style.backgroundColor = '#25d366';
+            btnZap.style.color = '#fff';
+            btnZap.style.textDecoration = 'none';
+            btnZap.style.padding = '12px 20px';
+            btnZap.style.borderRadius = '25px';
+
+            const btnFechar = document.createElement('button');
+            btnFechar.innerHTML = '✖ Fechar';
+            btnFechar.className = 'control-btn';
+            btnFechar.style.backgroundColor = '#d32f2f';
+            btnFechar.style.color = '#fff';
+            btnFechar.style.border = 'none';
+            btnFechar.style.padding = '12px 20px';
+            btnFechar.style.borderRadius = '25px';
+            btnFechar.onclick = () => document.body.removeChild(modalCert);
+
+            botoesContainer.appendChild(btnDownload);
+            botoesContainer.appendChild(btnZap);
+            botoesContainer.appendChild(btnFechar);
+
+            modalCert.appendChild(img);
+            modalCert.appendChild(botoesContainer);
+            document.body.appendChild(modalCert);
         }
 
         document.querySelectorAll('.level-btn').forEach((btn, index) => {

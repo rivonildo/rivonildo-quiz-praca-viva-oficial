@@ -13,3 +13,4 @@ config.local.php
 # OS temporary files
 .DS_Store
 Thumbs.db
+.vercel
